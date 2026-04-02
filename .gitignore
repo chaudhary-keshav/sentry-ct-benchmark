@@ -1,5 +1,4 @@
 .env
-/v10
 .cache/
 .code-workspace
 .coverage*
@@ -11,6 +10,7 @@
 *.egg
 *.db
 *.pid
+MANIFEST
 test.conf
 pip-log.txt
 celerybeat-schedule
@@ -32,7 +32,7 @@ node_modules
 /src/sentry/static/sentry/rest_framework/
 /src/sentry/integration-docs
 /src/sentry/loader/_registry.json
-/config/chartcuterie/config.*
+/config/chartcuterie/config.js*
 /config/*.pem
 /tests/apidocs/openapi-derefed.json
 /tests/apidocs/openapi-deprecated.json
@@ -49,49 +49,16 @@ Gemfile.lock
 .pytest_cache/
 .vscode/tags
 .vscode/bookmarks.json
+coverage.xml
 junit.xml
 *.codestyle.xml
+package-lock.json
 .webpack.meta
 pip-wheel-metadata/
 Brewfile.lock.json
+import-graph.txt
+import-graph.dot
 bin/rrweb-output
 model-manifest.json
 .mypy_cache
-.devenv
-.yalc/
-yalc.lock
-ngrok.yml
-package-lock.json
-yarn.lock
-.claude/settings.local.json
-.claude/plans
-.claude/worktrees
-.warden/
-# Auto-updated agent skill dependencies — ignore to avoid dirty state
-.agents/.gitignore
-agents.lock
-# end
-
-# Temporary: mirror .agents/.gitignore contents to avoid breaking pre-existing installs. Remove that after a week
-.agents/skills/agents-md/
-.agents/skills/blog-writing-guide/
-.agents/skills/brand-guidelines/
-.agents/skills/claude-settings-audit/
-.agents/skills/code-review/
-.agents/skills/code-simplifier/
-.agents/skills/commit/
-.agents/skills/create-pr/
-.agents/skills/django-access-review/
-.agents/skills/django-perf-review/
-.agents/skills/doc-coauthoring/
-.agents/skills/find-bugs/
-.agents/skills/gh-review-requests/
-.agents/skills/iterate-pr/
-.agents/skills/security-review/
-.agents/skills/skill-creator/
-.agents/skills/skill-scanner/
-.agents/skills/sred-project-organizer/
-.agents/skills/sred-work-summary/
-.agents/skills/warden/
-.agents/skills/warden-sweep/
-# end
+.codetrellis/

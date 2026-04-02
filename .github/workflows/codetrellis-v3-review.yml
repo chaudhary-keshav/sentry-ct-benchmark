@@ -33,9 +33,11 @@ jobs:
 
       - name: Generate PR diff
         run: |
-          git diff origin/master..HEAD > /tmp/pr_diff.txt
+          MERGE_BASE=$(git merge-base origin/master HEAD)
+          echo "Merge base: $MERGE_BASE"
+          git diff "$MERGE_BASE"..HEAD > /tmp/pr_diff.txt
           echo "Diff size: $(wc -c < /tmp/pr_diff.txt) bytes"
-          echo "Changed files: $(git diff --name-only origin/master..HEAD | wc -l)"
+          echo "Changed files: $(git diff --name-only "$MERGE_BASE"..HEAD | wc -l)"
 
       - name: Run v3 chunked agentic review
         env:
