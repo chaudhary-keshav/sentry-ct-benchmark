@@ -248,10 +248,18 @@ def detect_best_model() -> str:
 # ---------------------------------------------------------------------------
 
 def get_changed_files_list() -> list:
-    """Get list of changed file paths from git."""
+    """Get list of changed file paths from git using merge-base."""
     try:
+        # Find the merge base to only get files changed in this branch
+        mb = subprocess.run(
+            ["git", "merge-base", "origin/master", "HEAD"],
+            capture_output=True, text=True, timeout=10,
+        )
+        base = mb.stdout.strip()
+        if not base:
+            base = "origin/master"
         result = subprocess.run(
-            ["git", "diff", "--name-only", "origin/master..HEAD"],
+            ["git", "diff", "--name-only", f"{base}..HEAD"],
             capture_output=True, text=True, timeout=10,
         )
         return [f.strip() for f in result.stdout.strip().split("\n") if f.strip()]
@@ -725,8 +733,13 @@ def main():
         with open(diff_file) as f:
             pr_diff = f.read()
     else:
+        mb = subprocess.run(
+            ["git", "merge-base", "origin/master", "HEAD"],
+            capture_output=True, text=True,
+        )
+        base = mb.stdout.strip() or "origin/master"
         result = subprocess.run(
-            ["git", "diff", "origin/master..HEAD"],
+            ["git", "diff", f"{base}..HEAD"],
             capture_output=True, text=True,
         )
         pr_diff = result.stdout
