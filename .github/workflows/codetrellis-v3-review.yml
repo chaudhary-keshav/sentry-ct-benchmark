@@ -23,7 +23,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
 
       - name: Install CodeTrellis
         run: pip install codetrellis>=1.2.0
@@ -46,7 +46,8 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number || '1' }}
           REPO: ${{ github.repository }}
           DIFF_FILE: /tmp/pr_diff.txt
-          MAX_ROUNDS_PER_CHUNK: "5"
-          CHUNK_SIZE: "3"
-          INTER_CHUNK_DELAY: "65"
+          MODEL: 'gpt-5.2'
+          MAX_ROUNDS_PER_CHUNK: '5'
+          CHUNK_SIZE: '3'
+          INTER_CHUNK_DELAY: '65'
         run: python3 scripts/codetrellis-pr-reviewer.py
