@@ -1,0 +1,50 @@
+name: CodeTrellis AI PR Review (v3 Script)
+
+on:
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  codetrellis-v3-review:
+    name: CodeTrellis v3 Chunked Review
+    runs-on: ubuntu-latest
+    if: vars.ENABLE_V3_REVIEW == 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install CodeTrellis
+        run: pip install codetrellis>=1.2.0
+
+      - name: Scan codebase
+        run: codetrellis scan . --optimal
+
+      - name: Generate PR diff
+        run: |
+          git diff origin/master..HEAD > /tmp/pr_diff.txt
+          echo "Diff size: $(wc -c < /tmp/pr_diff.txt) bytes"
+          echo "Changed files: $(git diff --name-only origin/master..HEAD | wc -l)"
+
+      - name: Run v3 chunked agentic review
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+          DIFF_FILE: /tmp/pr_diff.txt
+          MAX_ROUNDS_PER_CHUNK: "5"
+          CHUNK_SIZE: "3"
+          INTER_CHUNK_DELAY: "65"
+        run: python3 scripts/codetrellis-pr-reviewer.py
