@@ -1,0 +1,29 @@
+name: Warden PR Review
+
+on:
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  warden-review:
+    name: Warden Code Review (GPT)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: chaudhary-keshav/warden-multi@master
+        with:
+          provider: openai
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          config-path: warden.toml
+          fail-on: high
+          report-on: medium
+          fail-check: 'false'

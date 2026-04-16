@@ -1,0 +1,17 @@
+version = 1
+
+[defaults]
+failOn = "high"
+reportOn = "medium"
+ignorePaths = ["dist/**", "node_modules/**", "*.lock"]
+
+[defaults.provider]
+name = "openai"
+
+[[skills]]
+name = "warden"
+paths = ["src/**", "*.py", "*.ts", "*.js"]
+
+[[skills.triggers]]
+type = "pull_request"
+actions = ["opened", "synchronize", "reopened"]
